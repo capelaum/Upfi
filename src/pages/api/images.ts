@@ -5,9 +5,11 @@ const { query } = fauna;
 const client = new fauna.Client({ secret: process.env.FAUNA_API_KEY ?? '' });
 
 interface ImagesQueryResponse {
-  after?: {
-    id: string;
-  };
+  after?: [
+    {
+      id: string;
+    }
+  ];
   data: {
     data: {
       title: string;
@@ -73,7 +75,7 @@ export default async function handler(
           id: item.ref.id
         }));
 
-        return res.json({
+        return res.status(200).json({
           data: formattedData,
           after: response.after ? response.after[0].id : null
         });
