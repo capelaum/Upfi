@@ -4,6 +4,8 @@
 
 Aplicação de upload de imagens no [ImgBB][img_bb], utilizando diversas ferramentas como React Query, React Hook Form e FaunaDB, utilizando ainda Chakra UI para a interface.
 
+<img src=".github/cover.png" alt="Upfi cover" />
+
 ## Descrição
 
 [Descrição do desafio][description]
