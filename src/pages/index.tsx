@@ -1,22 +1,22 @@
-import { Button, Box } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
+import { CardList } from 'components/CardList';
+import { Error } from 'components/Error';
+import { Header } from 'components/Header';
+import { Loading } from 'components/Loading';
 import { useMemo } from 'react';
 import { useInfiniteQuery } from 'react-query';
-
-import { Header } from '../components/Header';
-import { CardList } from '../components/CardList';
-import { api } from '../services/api';
-import { Loading } from '../components/Loading';
-import { Error } from '../components/Error';
+import { api } from 'services/api';
 
 export default function Home(): JSX.Element {
   const getImages = async ({ pageParam = null }) => {
     const data = await api
       .get('/images', {
         params: {
-          after: pageParam,
-        },
+          after: pageParam
+        }
       })
-      .then(response => response.data);
+      .then((response) => response.data);
+
     console.log(data);
 
     return data;
@@ -28,21 +28,24 @@ export default function Home(): JSX.Element {
     isError,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage,
+    isFetchingNextPage
   } = useInfiniteQuery(
     'images',
+
     // TODO AXIOS REQUEST WITH PARAM
     getImages,
+
     // TODO GET AND RETURN NEXT PAGE PARAM
     {
-      getNextPageParam: lastPage => lastPage.after ?? null,
+      getNextPageParam: (lastPage) => lastPage.after ?? null
     }
   );
 
   const formattedData = useMemo(() => {
     // TODO FORMAT AND FLAT DATA ARRAY
-    return data?.pages.map(page => page.data).flat();
+    return data?.pages.map((page) => page.data).flat();
   }, [data]);
+  console.log('🚀 ~ formattedData', formattedData);
 
   // TODO RENDER LOADING SCREEN
   if (isLoading) return <Loading />;

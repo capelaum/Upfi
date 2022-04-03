@@ -1,5 +1,4 @@
-import { Box, Flex, Button, useDisclosure, Image } from '@chakra-ui/react';
-
+import { Box, Button, Flex, Image, useDisclosure } from '@chakra-ui/react';
 import { ModalAddImage } from './Modal/AddImage';
 
 export function Header(): JSX.Element {
@@ -16,7 +15,7 @@ export function Header(): JSX.Element {
           px={20}
           py={6}
         >
-          <Image src="logo.svg" h={10} />
+          <Image src="logo.svg" h={10} alt="Upfi Logo" />
           <Button onClick={() => onOpen()}>Adicionar imagem</Button>
         </Flex>
       </Box>

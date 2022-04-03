@@ -1,23 +1,23 @@
-import userEvent from '@testing-library/user-event';
 import { ChakraProvider } from '@chakra-ui/react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import AxiosMock from 'axios-mock-adapter';
-import * as ReactDOMClient from 'react-dom/client';
-
+import { ReactNode } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import Home from '../../pages/index';
-import { theme } from '../../styles/theme';
 import { api } from '../../services/api';
+import { theme } from '../../styles/theme';
 
 const apiMock = new AxiosMock(api);
 
 let queryClient: QueryClient;
-let root;
+let wrapper: ReturnType<typeof render>;
 
 describe('Home page', () => {
   beforeAll(() => {
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
-      value: jest.fn().mockImplementation(query => ({
+      value: jest.fn().mockImplementation((query) => ({
         matches: false,
         media: query,
         onchange: null,
@@ -25,8 +25,8 @@ describe('Home page', () => {
         removeListener: jest.fn(),
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      })),
+        dispatchEvent: jest.fn()
+      }))
     });
 
     const LOAD_FAILURE_SRC = 'LOAD_FAILURE_SRC';
@@ -46,7 +46,7 @@ describe('Home page', () => {
             }
           });
         }
-      },
+      }
     });
 
     function noOp(): string {
@@ -60,22 +60,19 @@ describe('Home page', () => {
 
     queryClient = new QueryClient();
 
-    const wrapper = ({ children }): JSX.Element => (
+    wrapper = ({ children }: { children: ReactNode }): JSX.Element => (
       <ChakraProvider resetCSS theme={theme}>
         <QueryClientProvider client={queryClient}>
           {children}
         </QueryClientProvider>
       </ChakraProvider>
     );
-
-
-    root = ReactDOMClient.createRoot(wrapper);
   });
 
   it('should be able to render loading', async () => {
     apiMock.onGet('/api/images').reply(200);
 
-    root.render(<Home />);
+    render(<Home />, { wrapper });
 
     expect(
       screen.getByRole('heading', { name: 'Carregando aplicação...' })
@@ -86,13 +83,13 @@ describe('Home page', () => {
   it('should be able to render error', async () => {
     const mockedConsoleError = jest.fn();
     Object.defineProperty(console, 'error', {
-      value: mockedConsoleError,
+      value: mockedConsoleError
     });
 
     apiMock.onGet('/api/images').reply(400);
     queryClient.setQueryDefaults('images', { retry: 0 });
 
-    root.render(<Home />);
+    render(<Home />, { wrapper });
 
     expect(
       await screen.findByText('Infelizmente ocorreu um erro =(')
@@ -111,19 +108,19 @@ describe('Home page', () => {
           ts: 1617555636970000,
           title: 'Doge',
           description: 'The best doge',
-          url: 'LOAD_SUCCESS_SRC',
+          url: 'LOAD_SUCCESS_SRC'
         },
         {
           id: '1617556158800000',
           ts: 1617556158800000,
           title: 'Danilo',
           description: 'The best friend',
-          url: 'LOAD_SUCCESS_SRC',
-        },
-      ],
+          url: 'LOAD_SUCCESS_SRC'
+        }
+      ]
     });
 
-    root.render(<Home />);
+    render(<Home />, { wrapper });
 
     expect(await screen.findByText('The best doge')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Doge' })).toBeInTheDocument();
@@ -143,12 +140,12 @@ describe('Home page', () => {
           ts: 1617555636970000,
           title: 'Doge',
           description: 'The best doge',
-          url: 'LOAD_SUCCESS_SRC',
-        },
-      ],
+          url: 'LOAD_SUCCESS_SRC'
+        }
+      ]
     });
 
-    root.render(<Home />);
+    render(<Home />, { wrapper });
 
     expect(await screen.findByText('The best doge')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Doge' })).toBeInTheDocument();
@@ -173,16 +170,16 @@ describe('Home page', () => {
           ts: 1617555636970000,
           title: 'Doge',
           description: 'The best doge',
-          url: 'LOAD_SUCCESS_SRC',
+          url: 'LOAD_SUCCESS_SRC'
         },
         {
           id: '1617556158800000',
           ts: 1617556158800000,
           title: 'Danilo',
           description: 'The best friend',
-          url: 'LOAD_SUCCESS_SRC',
-        },
-      ],
+          url: 'LOAD_SUCCESS_SRC'
+        }
+      ]
     });
     apiMock.onGet('/api/images').replyOnce(200, {
       after: null,
@@ -192,12 +189,12 @@ describe('Home page', () => {
           ts: 1617555636990000,
           title: 'Vini',
           description: 'The ??',
-          url: 'LOAD_SUCCESS_SRC',
-        },
-      ],
+          url: 'LOAD_SUCCESS_SRC'
+        }
+      ]
     });
 
-    root.render(<Home />);
+    render(<Home />, { wrapper });
 
     expect(await screen.findByText('The best doge')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Doge' })).toBeInTheDocument();
@@ -208,7 +205,7 @@ describe('Home page', () => {
     expect(screen.getByRole('img', { name: 'Danilo' })).toBeInTheDocument();
 
     const loadMoreButton = await screen.findByRole('button', {
-      name: 'Carregar mais',
+      name: 'Carregar mais'
     });
     fireEvent.click(loadMoreButton);
 
@@ -236,16 +233,16 @@ describe('Home page', () => {
           ts: 1617555636970000,
           title: 'Doge',
           description: 'The best doge',
-          url: 'LOAD_SUCCESS_SRC',
+          url: 'LOAD_SUCCESS_SRC'
         },
         {
           id: '1617556158800000',
           ts: 1617556158800000,
           title: 'Danilo',
           description: 'The best friend',
-          url: 'LOAD_SUCCESS_SRC',
-        },
-      ],
+          url: 'LOAD_SUCCESS_SRC'
+        }
+      ]
     });
     apiMock.onGet('/api/images').replyOnce(200, {
       after: null,
@@ -255,19 +252,19 @@ describe('Home page', () => {
           ts: 1617555636990000,
           title: 'Vini',
           description: 'The ??',
-          url: 'LOAD_SUCCESS_SRC',
-        },
-      ],
+          url: 'LOAD_SUCCESS_SRC'
+        }
+      ]
     });
     apiMock.onPost('https://api.imgbb.com/1/upload').replyOnce(200, {
       data: {
-        url: 'LOAD_SUCCESS_SRC',
-      },
+        url: 'LOAD_SUCCESS_SRC'
+      }
     });
 
     const file = new File(['image'], 'image.png', { type: 'image/png' });
 
-    root.render(<Home />);
+    render(<Home />, { wrapper });
 
     expect(await screen.findByText('The best doge')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Doge' })).toBeInTheDocument();
@@ -278,7 +275,7 @@ describe('Home page', () => {
     expect(screen.getByRole('img', { name: 'Danilo' })).toBeInTheDocument();
 
     const loadMoreButton = await screen.findByRole('button', {
-      name: 'Carregar mais',
+      name: 'Carregar mais'
     });
     fireEvent.click(loadMoreButton);
 
@@ -301,22 +298,22 @@ describe('Home page', () => {
 
     const fileInput = screen.getByTestId('image') as HTMLInputElement;
     const nameInput = screen.getByRole('textbox', {
-      name: 'title',
+      name: 'title'
     }) as HTMLInputElement;
     const descriptionInput = screen.getByRole('textbox', {
-      name: 'description',
+      name: 'description'
     }) as HTMLInputElement;
 
     userEvent.upload(fileInput, file);
     fireEvent.change(nameInput, {
       target: {
-        value: 'Rocket League',
-      },
+        value: 'Rocket League'
+      }
     });
     fireEvent.change(descriptionInput, {
       target: {
-        value: 'Flying forever',
-      },
+        value: 'Flying forever'
+      }
     });
 
     await screen.findByRole('img', { name: 'Uploaded photo' });
@@ -335,16 +332,16 @@ describe('Home page', () => {
           ts: 1617555636970000,
           title: 'Doge',
           description: 'The best doge',
-          url: 'LOAD_SUCCESS_SRC',
+          url: 'LOAD_SUCCESS_SRC'
         },
         {
           id: '1617556158800000',
           ts: 1617556158800000,
           title: 'Danilo',
           description: 'The best friend',
-          url: 'LOAD_SUCCESS_SRC',
-        },
-      ],
+          url: 'LOAD_SUCCESS_SRC'
+        }
+      ]
     });
     apiMock.onGet('/api/images').replyOnce(200, {
       after: null,
@@ -354,16 +351,16 @@ describe('Home page', () => {
           ts: 1617555636990000,
           title: 'Vini',
           description: 'The ??',
-          url: 'LOAD_SUCCESS_SRC',
+          url: 'LOAD_SUCCESS_SRC'
         },
         {
           id: '1617555639990000',
           ts: 1617555639990000,
           title: 'Rocket League',
           description: 'Flying forever',
-          url: 'LOAD_SUCCESS_SRC',
-        },
-      ],
+          url: 'LOAD_SUCCESS_SRC'
+        }
+      ]
     });
 
     fireEvent.click(submitButton);

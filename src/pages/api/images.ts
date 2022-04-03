@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import fauna from 'faunadb';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 const { query } = fauna;
-const client = new fauna.Client({ secret: process.env.FAUNA_API_KEY });
+const client = new fauna.Client({ secret: process.env.FAUNA_API_KEY ?? '' });
 
 interface ImagesQueryResponse {
   after?: {
@@ -34,14 +34,14 @@ export default async function handler(
           data: {
             title,
             description,
-            url,
-          },
+            url
+          }
         })
       )
       .then(() => {
         return res.status(201).json({ success: true });
       })
-      .catch(err =>
+      .catch((err) =>
         res
           .status(501)
           .json({ error: `Sorry something Happened! ${err.message}` })
@@ -53,7 +53,7 @@ export default async function handler(
 
     const queryOptions = {
       size: 6,
-      ...(after && { after: query.Ref(query.Collection('images'), after) }),
+      ...(after && { after: query.Ref(query.Collection('images'), after) })
     };
 
     return client
@@ -66,19 +66,19 @@ export default async function handler(
           query.Lambda('X', query.Get(query.Var('X')))
         )
       )
-      .then(response => {
-        const formattedData = response.data.map(item => ({
+      .then((response) => {
+        const formattedData = response.data.map((item) => ({
           ...item.data,
           ts: item.ts,
-          id: item.ref.id,
+          id: item.ref.id
         }));
 
         return res.json({
           data: formattedData,
-          after: response.after ? response.after[0].id : null,
+          after: response.after ? response.after.id : null
         });
       })
-      .catch(err => {
+      .catch((err) => {
         return res.status(400).json(err);
       });
   }

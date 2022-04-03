@@ -1,32 +1,32 @@
 import {
   Box,
-  FormLabel,
   CircularProgress,
   CircularProgressLabel,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
   Icon,
   Image,
   Text,
-  FormControl,
-  FormErrorMessage,
-  Flex,
-  useToast,
   Tooltip,
+  useToast
 } from '@chakra-ui/react';
 import axios, { AxiosRequestConfig, CancelTokenSource } from 'axios';
 import {
-  useState,
-  SetStateAction,
   Dispatch,
-  ForwardRefRenderFunction,
   forwardRef,
+  ForwardRefRenderFunction,
+  SetStateAction,
   useCallback,
   useEffect,
+  useState
 } from 'react';
 import {
   FieldError,
   FieldValues,
   UseFormSetError,
-  UseFormTrigger,
+  UseFormTrigger
 } from 'react-hook-form';
 import { FiAlertCircle, FiPlus } from 'react-icons/fi';
 import { api } from '../../services/api';
@@ -64,7 +64,7 @@ const FileInputBase: ForwardRefRenderFunction<
   const toast = useToast();
   const [progress, setProgress] = useState(0);
   const [isSending, setIsSending] = useState(false);
-  const [cancelToken, setCancelToken] = useState<CancelTokenSource>(
+  const [cancelToken, setCancelToken] = useState<CancelTokenSource | null>(
     {} as CancelTokenSource
   );
 
@@ -85,7 +85,9 @@ const FileInputBase: ForwardRefRenderFunction<
       const formData = new FormData();
 
       formData.append(event.target.name, event.target.files[0]);
-      formData.append('key', process.env.NEXT_PUBLIC_IMGBB_API_KEY);
+
+      if (process.env.NEXT_PUBLIC_IMGBBB_API_KEY)
+        formData.append('key', process.env.NEXT_PUBLIC_IMGBBB_API_KEY);
 
       const { CancelToken } = axios;
       const source = CancelToken.source();
@@ -96,7 +98,7 @@ const FileInputBase: ForwardRefRenderFunction<
         onUploadProgress: (e: ProgressEvent) => {
           setProgress(Math.round((e.loaded * 100) / e.total));
         },
-        cancelToken: source.token,
+        cancelToken: source.token
       } as AxiosRequestConfig;
 
       try {
@@ -109,14 +111,15 @@ const FileInputBase: ForwardRefRenderFunction<
         setImageUrl(response.data.data.url);
         setLocalImageUrl(URL.createObjectURL(event.target.files[0]));
       } catch (err) {
-        if (err?.message === 'Cancelled image upload.') return;
+        if (err instanceof Error && err?.message === 'Cancelled image upload.')
+          return;
 
         toast({
           title: 'Falha no envio',
           description: 'Ocorreu um erro ao realizar o upload da sua imagem.',
           status: 'error',
           duration: 5000,
-          isClosable: true,
+          isClosable: true
         });
       } finally {
         setIsSending(false);
@@ -218,7 +221,7 @@ const FileInputBase: ForwardRefRenderFunction<
           ref={ref}
           type="file"
           style={{
-            display: 'none',
+            display: 'none'
           }}
           {...rest}
         />
