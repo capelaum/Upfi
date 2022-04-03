@@ -1,11 +1,9 @@
 import { Box, Button, Stack, useToast } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
+import { FileInput } from 'components/Input/FileInput';
+import { TextInput } from 'components/Input/TextInput';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
-
-import { api } from '../../services/api';
-import { FileInput } from '../Input/FileInput';
-import { TextInput } from '../Input/TextInput';
 
 interface FormAddImageProps {
   closeModal: () => void;
@@ -25,31 +23,31 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
     },
     description: {
       // TODO REQUIRED, MAX LENGTH VALIDATIONS
-    },
+    }
   };
 
   const queryClient = useQueryClient();
   const mutation = useMutation(
     // TODO MUTATION API POST REQUEST,
+
     {
       // TODO ONSUCCESS MUTATION
     }
   );
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState,
-    setError,
-    trigger,
-  } = useForm();
-  const { errors } = formState;
+  const { register, handleSubmit, reset, formState, setError, trigger } =
+    useForm();
+  const { errors, isSubmitting } = formState;
 
   const onSubmit = async (data: Record<string, unknown>): Promise<void> => {
     try {
       // TODO SHOW ERROR TOAST IF IMAGE URL DOES NOT EXISTS
+      if (!imageUrl) {
+        throw new Error('Image URL is required');
+      }
+
       // TODO EXECUTE ASYNC MUTATION
+      await mutation();
       // TODO SHOW SUCCESS TOAST
     } catch {
       // TODO SHOW ERROR TOAST IF SUBMIT FAILED
@@ -86,8 +84,8 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
 
       <Button
         my={6}
-        isLoading={formState.isSubmitting}
-        isDisabled={formState.isSubmitting}
+        isLoading={isSubmitting}
+        isDisabled={isSubmitting}
         type="submit"
         w="100%"
         py={6}
