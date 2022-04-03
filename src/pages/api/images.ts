@@ -75,7 +75,7 @@ export default async function handler(
 
         return res.json({
           data: formattedData,
-          after: response.after ? response.after.id : null
+          after: response.after ? response.after[0].id : null
         });
       })
       .catch((err) => {

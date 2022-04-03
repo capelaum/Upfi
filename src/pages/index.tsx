@@ -43,10 +43,11 @@ export default function Home(): JSX.Element {
     hasNextPage,
     isFetchingNextPage
   } = useInfiniteQuery('images', getImages, {
-    getNextPageParam: (lastPage) => lastPage.after ?? null
+    getNextPageParam: (lastPage) => {
+      return lastPage.after ?? null;
+    }
   });
 
-  // TODO FORMAT AND FLAT DATA ARRAY
   const formattedData = useMemo(() => {
     return data?.pages.map((page) => page.data).flat();
   }, [data]);
@@ -61,7 +62,6 @@ export default function Home(): JSX.Element {
 
       <Box maxW={1120} px={20} mx="auto" my={20}>
         <CardList cards={formattedData ?? ([] as Card[])} />
-        {hasNextPage}
         {hasNextPage && (
           <Button mt="5" onClick={() => fetchNextPage()}>
             {isFetchingNextPage ? 'Carregando...' : 'Carregar mais'}

@@ -76,7 +76,6 @@ const FileInputBase: ForwardRefRenderFunction<
 
       setImageUrl('');
       setLocalImageUrl('');
-      setError('image', null);
       setIsSending(true);
 
       await onChange(event);
@@ -126,7 +125,7 @@ const FileInputBase: ForwardRefRenderFunction<
         setProgress(0);
       }
     },
-    [onChange, setError, setImageUrl, setLocalImageUrl, trigger, toast]
+    [onChange, setImageUrl, setLocalImageUrl, trigger, toast]
   );
 
   useEffect(() => {

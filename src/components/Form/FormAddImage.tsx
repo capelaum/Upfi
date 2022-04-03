@@ -10,12 +10,6 @@ interface FormAddImageProps {
   closeModal: () => void;
 }
 
-interface ImageFormData {
-  image: unknown;
-  description: string;
-  title: string;
-}
-
 export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   const [imageUrl, setImageUrl] = useState('');
   const [localImageUrl, setLocalImageUrl] = useState('');
