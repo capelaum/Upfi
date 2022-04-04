@@ -6,6 +6,7 @@ import {
   Skeleton,
   SkeletonText,
   Text,
+  useDisclosure,
   useToast
 } from '@chakra-ui/react';
 import { Card } from 'pages';
@@ -13,6 +14,7 @@ import { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'services/api';
+import { ModalDeleteImage } from './Modal/DeleteImage';
 
 interface CardProps {
   card: Card;
@@ -21,6 +23,7 @@ interface CardProps {
 
 export function CardItem({ card, viewImage }: CardProps): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const toast = useToast();
   const queryClient = useQueryClient();
@@ -41,14 +44,6 @@ export function CardItem({ card, viewImage }: CardProps): JSX.Element {
   );
 
   async function deleteImage() {
-    const isDeleteConfirmed = window.confirm(
-      `Certeza que quer deletar a image ${card.title}?`
-    );
-
-    if (!isDeleteConfirmed) {
-      return;
-    }
-
     try {
       await mutation.mutateAsync();
 
@@ -124,9 +119,15 @@ export function CardItem({ card, viewImage }: CardProps): JSX.Element {
           right={4}
           bottom={4}
           _hover={{ cursor: 'pointer', color: 'orange.700' }}
-          onClick={deleteImage}
+          onClick={onOpen}
         />
       </Box>
+
+      <ModalDeleteImage
+        isOpen={isOpen}
+        onClose={onClose}
+        deleteImage={deleteImage}
+      />
     </Box>
   );
 }
