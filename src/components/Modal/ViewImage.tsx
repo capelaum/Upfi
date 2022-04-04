@@ -24,23 +24,34 @@ export function ModalViewImage({
       <ModalOverlay />
       <ModalContent
         borderRadius="7px"
-        mx="auto"
+        mx={5}
+        my="auto"
         w="auto"
         h="auto"
         maxW={['300px', '500px', '900px']}
         maxH={['350px', '350px', '600px']}
       >
         <ModalBody p="0">
-          <Image
-            borderTopRadius="5px"
-            src={imgUrl}
-            alt="image"
-            maxW={['300px', '500px', '900px']}
-            maxH={['350px', '350px', '600px']}
-          />
+          <Image borderTopRadius="5px" src={imgUrl} alt="image" />
         </ModalBody>
-        <ModalFooter bg="pGray.800" h="2rem" py="20px" borderBottomRadius="5px">
-          <Link href={imgUrl} isExternal fontSize="1rem" mr="auto">
+        <ModalFooter
+          bg="pGray.900"
+          h="2rem"
+          py="20px"
+          borderBottomRadius="5px"
+          display="flex"
+          justifyContent="start"
+        >
+          <Link
+            href={imgUrl}
+            isExternal
+            fontSize="1rem"
+            color="pGray.100"
+            ml={-2}
+            _hover={{
+              color: 'orange.600'
+            }}
+          >
             Abrir original
           </Link>
         </ModalFooter>

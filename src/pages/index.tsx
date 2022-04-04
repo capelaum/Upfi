@@ -48,7 +48,7 @@ export default function Home(): JSX.Element {
     }
   });
 
-  const formattedData = useMemo(() => {
+  const formattedCards = useMemo(() => {
     return data?.pages.map((page) => page.data).flat();
   }, [data]);
 
@@ -61,7 +61,7 @@ export default function Home(): JSX.Element {
       <Header />
 
       <Box maxW={1120} px={[8, 20]} mx="auto" my={20}>
-        <CardList cards={formattedData ?? ([] as Card[])} />
+        <CardList cards={formattedCards ?? ([] as Card[])} />
         {hasNextPage && (
           <Button mt="8" onClick={() => fetchNextPage()}>
             {isFetchingNextPage ? 'Carregando...' : 'Carregar mais'}

@@ -6,7 +6,7 @@ export function Header(): JSX.Element {
 
   return (
     <>
-      <Box bgColor="pGray.800" borderBottom="1px" borderColor="orange">
+      <Box bgColor="pGray.800" borderBottom="1px" borderColor="orange.600">
         <Flex
           flexDirection={['column', 'row']}
           justifyContent="space-between"

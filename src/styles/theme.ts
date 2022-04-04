@@ -12,32 +12,40 @@ export const theme = extendTheme({
       '600': '#6A6762',
       '700': '#504E49',
       '800': '#353431',
-      '900': '#1B1A18',
-    },
+      '900': '#1B1A18'
+    }
   },
   fonts: {
     heading: 'Roboto',
-    body: 'Roboto',
+    body: 'Roboto'
   },
   components: {
     Text: {
       baseStyle: {
         fontSize: 'lg',
-        fontWeight: 'normal',
-      },
+        fontWeight: 'normal'
+      }
     },
     Button: {
       defaultProps: {
-        colorScheme: 'orange',
-      },
+        colorScheme: 'orange'
+      }
     },
+    Skeleton: {
+      variants: {
+        'dark-skeleton': {
+          startColor: 'pGray.900',
+          endColor: 'pGray.700'
+        }
+      }
+    }
   },
   styles: {
     global: {
       body: {
         bg: 'pGray.900',
-        color: 'pGray.50',
-      },
-    },
-  },
+        color: 'pGray.50'
+      }
+    }
+  }
 });
