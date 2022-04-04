@@ -12,7 +12,7 @@ Aplicação de upload de imagens no [ImgBB][img_bb], utilizando diversas ferrame
 
 ## Layout
 
-Pode-se ver o [layout](figma) no figma.
+Pode-se ver o [layout][figma] no figma.
 
 ## Tech
 
@@ -24,16 +24,17 @@ Pode-se ver o [layout](figma) no figma.
 - [Axios][axios]
 - [Framer Motion][framer_motion]
 
-[react_query]: [https://react-query.tanstack.com]
-[react_hook_form]: [https://react-hook-form.com]
-[fauna_db]: [https://fauna.com]
-[chakra_ui]: [https://chakra-ui.com]
-[axios]: [https://github.com/axios/axios]
-[img_bb]: [https://pt-br.imgbb.com]
-[react_icons]: [https://react-icons.github.io/react-icons]
-[framer_motion]: [https://www.framer.com/motion]
-[figma]: [https://www.figma.com/file/FBNQKO523802V4MHcJia5y/Desafio-2-M%C3%B3dulo-4-ReactJS-Copy?fuid=825800961521335351]
-[description]: [https://www.notion.so/Desafio-02-Upload-de-imagens-4cf1c3b1c1ad4a66961b6e48558cc3b8]
+[react_query]: https://react-query.tanstack.com
+[react_hook_form]: https://react-hook-form.com
+[fauna_db]: https://fauna.com
+[chakra_ui]: https://chakra-ui.com
+[axios]: https://github.com/axios/axios
+[img_bb]: https://pt-br.imgbb.com
+[react_icons]: https://react-icons.github.io/react-icons
+[framer_motion]: https://www.framer.com/motion
+
+[figma]: https://www.figma.com/file/FBNQKO523802V4MHcJia5y/Desafio-2-M%C3%B3dulo-4-ReactJS-Copyfuid=825800961521335351]
+[description]: https://www.notion.so/Desafio-02-Upload-de-imagens-4cf1c3b1c1ad4a66961b6e48558cc3b8
 
 ## Créditos
 
