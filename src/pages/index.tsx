@@ -3,6 +3,7 @@ import { CardList } from 'components/CardList';
 import { Error } from 'components/Error';
 import { Header } from 'components/Header';
 import { Loading } from 'components/Loading';
+import Head from 'next/Head';
 import { useMemo } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { api } from 'services/api';
@@ -58,6 +59,9 @@ export default function Home(): JSX.Element {
 
   return (
     <>
+      <Head>
+        <title>Upfi</title>
+      </Head>
       <Header />
 
       <Box maxW={1120} px={[8, 20]} mx="auto" my={20}>
