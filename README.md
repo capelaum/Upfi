@@ -1,5 +1,7 @@
 # Upfi
 
+Demo: https://capelaum-upfi.vercel.app
+
 ## Ignite React.js - Módulo 4, Desafio 2
 
 Aplicação de upload de imagens no [ImgBB][img_bb], utilizando diversas ferramentas como React Query, React Hook Form e FaunaDB, utilizando ainda Chakra UI para a interface.
