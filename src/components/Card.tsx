@@ -72,7 +72,7 @@ export function CardItem({ card, viewImage }: CardProps): JSX.Element {
           src={card.url}
           alt={card.title}
           objectFit="cover"
-          w="max"
+          w="full"
           h={48}
           borderTopRadius="md"
           onClick={() => viewImage(card.url)}
