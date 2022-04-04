@@ -11,6 +11,10 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
           <link rel="icon" type="image/x-icon" href="favicon.ico" />
+          <meta
+            name="description"
+            content="Upfi - Image Uploader with Next.js + Chakra UI + Fauna DB"
+          />
         </Head>
         <body>
           <Main />
