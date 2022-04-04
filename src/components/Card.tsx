@@ -1,10 +1,10 @@
 import {
   Box,
   Heading,
-  Text,
   Image,
   Skeleton,
   SkeletonText,
+  Text
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
@@ -47,7 +47,9 @@ export function Card({ data, viewImage }: CardProps): JSX.Element {
           </>
         ) : (
           <>
-            <Heading fontSize="2xl">{data.title}</Heading>
+            <Heading color="orange.500" fontSize="2xl">
+              {data.title}
+            </Heading>
             <Text mt={2.5} fontSize="md">
               {data.description}
             </Text>

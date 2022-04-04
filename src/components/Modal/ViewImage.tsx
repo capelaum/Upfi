@@ -23,6 +23,7 @@ export function ModalViewImage({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent
+        borderRadius="7px"
         mx="auto"
         w="auto"
         h="auto"
@@ -31,6 +32,7 @@ export function ModalViewImage({
       >
         <ModalBody p="0">
           <Image
+            borderTopRadius="5px"
             src={imgUrl}
             alt="image"
             maxW={['300px', '500px', '900px']}

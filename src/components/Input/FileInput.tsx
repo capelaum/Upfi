@@ -141,6 +141,7 @@ const FileInputBase: ForwardRefRenderFunction<
         mx="auto"
         w={40}
         h={40}
+        borderRadius="md"
         htmlFor={name}
         cursor={isSending ? 'progress' : 'pointer'}
         opacity={isSending ? 0.5 : 1}
