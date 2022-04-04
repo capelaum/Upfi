@@ -1,54 +1,98 @@
 import {
   Box,
   Heading,
+  Icon,
   Image,
   Skeleton,
   SkeletonText,
-  Text
+  Text,
+  useToast
 } from '@chakra-ui/react';
+import { Card } from 'pages';
 import { useState } from 'react';
-
-interface Card {
-  title: string;
-  description: string;
-  url: string;
-  ts: number;
-}
+import { FaTrash } from 'react-icons/fa';
+import { useMutation, useQueryClient } from 'react-query';
+import { api } from 'services/api';
 
 interface CardProps {
-  data: Card;
+  card: Card;
   viewImage: (url: string) => void;
 }
 
-export function Card({ data, viewImage }: CardProps): JSX.Element {
+export function CardItem({ card, viewImage }: CardProps): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
 
+  const toast = useToast();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(
+    async () => {
+      const response = await api.delete('/images', {
+        params: {
+          id: card.id
+        }
+      });
+
+      return response.data;
+    },
+    {
+      onSuccess: () => queryClient.invalidateQueries('images')
+    }
+  );
+
+  async function deleteImage() {
+    const isDeleteConfirmed = window.confirm(
+      `Certeza que quer deletar a image ${card.title}?`
+    );
+
+    if (!isDeleteConfirmed) {
+      return;
+    }
+
+    try {
+      await mutation.mutateAsync();
+
+      toast({
+        title: 'Imagem deletada',
+        description: 'Sua imagem foi deletada com sucesso.',
+        status: 'success'
+      });
+    } catch (error) {
+      toast({
+        title: 'Falha ao deletar imagem',
+        description: 'Ocorreu um erro ao tentar deletar a sua imagem.',
+        status: 'error'
+      });
+    }
+  }
+
   return (
-    <Box key={data.ts} borderRadius="md" bgColor="pGray.800">
+    <Box key={card.ts} borderRadius="md" bgColor="pGray.800">
       <Skeleton
         isLoaded={!isLoading}
         startColor="pGray.800"
         endColor="pGray.900"
       >
         <Image
-          src={data.url}
-          alt={data.title}
+          src={card.url}
+          alt={card.title}
           objectFit="cover"
           w="max"
           h={48}
           borderTopRadius="md"
-          onClick={() => viewImage(data.url)}
+          onClick={() => viewImage(card.url)}
           onLoad={() => setIsLoading(false)}
           cursor="pointer"
         />
       </Skeleton>
 
-      <Box pt={5} pb={4} px={4}>
+      <Box pt={5} pb={4} px={4} position="relative">
         {isLoading ? (
           <>
             <SkeletonText
               fontSize="2xl"
               mt={2}
+              mr={6}
               noOfLines={1}
               startColor="pGray.800"
               endColor="pGray.900"
@@ -56,6 +100,7 @@ export function Card({ data, viewImage }: CardProps): JSX.Element {
             <SkeletonText
               fontSize="md"
               mt={7}
+              mr={6}
               noOfLines={1}
               startColor="pGray.800"
               endColor="pGray.900"
@@ -64,13 +109,23 @@ export function Card({ data, viewImage }: CardProps): JSX.Element {
         ) : (
           <>
             <Heading color="orange.500" fontSize="2xl">
-              {data.title}
+              {card.title}
             </Heading>
             <Text mt={2} fontSize="sm">
-              {data.description}
+              {card.description}
             </Text>
           </>
         )}
+
+        <Icon
+          as={FaTrash}
+          color="orange.600"
+          position="absolute"
+          right={4}
+          bottom={4}
+          _hover={{ cursor: 'pointer', color: 'orange.700' }}
+          onClick={deleteImage}
+        />
       </Box>
     </Box>
   );

@@ -10,10 +10,18 @@ interface FormAddImageProps {
   closeModal: () => void;
 }
 
+interface ImageData {
+  url: string;
+  title: string;
+  description: string;
+}
+
 export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   const [imageUrl, setImageUrl] = useState('');
   const [localImageUrl, setLocalImageUrl] = useState('');
+
   const toast = useToast();
+  const queryClient = useQueryClient();
 
   const regexInputImageAcceptedFormats = new RegExp('^image\\/(gif|jpeg|png)$');
 
@@ -50,14 +58,19 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
     }
   };
 
-  const queryClient = useQueryClient();
+  const { register, handleSubmit, reset, formState, setError, trigger } =
+    useForm();
+
+  const { errors, isSubmitting } = formState;
+
   const mutation = useMutation(
-    async (data: Record<string, unknown>) => {
+    async (data: Record<string, string>) => {
       const response = await api.post('/images', {
         url: imageUrl,
         title: data.title,
         description: data.description
       });
+
       return response.data;
     },
     {
@@ -65,24 +78,19 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
     }
   );
 
-  const { register, handleSubmit, reset, formState, setError, trigger } =
-    useForm();
+  const onSubmit = async (data: Record<string, string>): Promise<void> => {
+    if (!data.image) {
+      toast({
+        title: 'Imagem não adicionada',
+        description:
+          'É preciso adicionar e aguardar o upload de uma imagem antes de realizar o cadastro.',
+        status: 'error'
+      });
 
-  const { errors, isSubmitting } = formState;
+      return;
+    }
 
-  const onSubmit = async (data: Record<string, unknown>): Promise<void> => {
     try {
-      if (!data.image) {
-        toast({
-          title: 'Imagem não adicionada',
-          description:
-            'É preciso adicionar e aguardar o upload de uma imagem antes de realizar o cadastro.',
-          status: 'error'
-        });
-
-        return;
-      }
-
       await mutation.mutateAsync(data);
 
       toast({
@@ -90,8 +98,6 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
         description: 'Sua imagem foi cadastrada com sucesso.',
         status: 'success'
       });
-
-      return;
     } catch {
       toast({
         title: 'Falha no cadastro',

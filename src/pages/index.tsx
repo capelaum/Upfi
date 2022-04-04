@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { api } from 'services/api';
 
-interface Card {
+export interface Card {
   title: string;
   description: string;
   url: string;

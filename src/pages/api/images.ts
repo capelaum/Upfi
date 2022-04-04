@@ -85,5 +85,20 @@ export default async function handler(
       });
   }
 
+  if (req.method === 'DELETE') {
+    const { id } = req.query;
+
+    return client
+      .query(query.Delete(query.Ref(query.Collection('images'), id)))
+      .then(() => {
+        return res.status(200).json({ success: true });
+      })
+      .catch((err) =>
+        res
+          .status(501)
+          .json({ error: `Sorry something Happened! ${err.message}` })
+      );
+  }
+
   return res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
 }
